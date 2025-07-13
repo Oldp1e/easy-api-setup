@@ -1,0 +1,79 @@
+{
+  "name": "generic/api-template",
+  "description": "A complete, production-ready PHP API template with authentication, documentation, and modern patterns",
+  "type": "project",
+  "keywords": ["api", "template", "php", "jwt", "rest", "swagger", "boilerplate"],
+  "license": "MIT",
+  "require": {
+    "php": ">=8.0",
+    "firebase/php-jwt": "^6.11",
+    "vlucas/phpdotenv": "^5.6",
+    "robmorgan/phinx": "^0.16.7",
+    "phpmailer/phpmailer": "^6.10",
+    "zircote/swagger-php": "^5.1",
+    "doctrine/annotations": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Src\\": "src/",
+      "OpenApiSpec\\": "src/controllers/OpenApiSpec/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Generic API Template",
+      "email": "your-email@example.com"
+    }
+  ],
+  "scripts": {
+    "start": [
+      "Composer\\Config::disableProcessTimeout",
+      "php -S localhost:8000 -t public"
+    ],
+    "start:host": [
+      "Composer\\Config::disableProcessTimeout",
+      "php -S 0.0.0.0:8000 -t public"
+    ],
+    "migrate": "vendor/bin/phinx migrate",
+    "rollback": "vendor/bin/phinx rollback",
+    "seed": "vendor/bin/phinx seed:run",
+    "create": "vendor/bin/phinx create",
+    "create-seed": "vendor/bin/phinx seed:create",
+    "db:fresh": [
+      "vendor/bin/phinx rollback -t 0 -e development",
+      "vendor/bin/phinx migrate -e development"
+    ],
+    "db:seed": [
+      "vendor/bin/phinx seed:run -s UserSeeder -e development"
+    ],
+    "reset-db": [
+      "vendor/bin/phinx rollback -t 0 -e development",
+      "vendor/bin/phinx migrate -e development",
+      "vendor/bin/phinx seed:run -s UserSeeder -e development"
+    ],
+    "generate-swagger-json": [
+      "vendor/bin/openapi --output public/swagger.json src/"
+    ],
+    "test": "vendor/bin/phpunit",
+    "setup": [
+      "@composer install",
+      "echo 'Please copy .env.example to .env and configure your settings'",
+      "echo 'Then run: composer migrate && composer db:seed'"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
